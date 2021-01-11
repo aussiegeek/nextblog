@@ -1,0 +1,26 @@
+---
+title: "4 great GraphQL tools you should know about"
+date: "2020-11-05T13:07:00+11:00"
+---
+
+## [graphql-code-generator](https://graphql-code-generator.com/)
+
+Using TypeScript and GraphQL? Instead of loosing type accuracy, or manually creating types for your queries, have them generated for you based on your schema. If you are using Apollo, you can also generate a wrapper hook to use your query with the correct types already attached
+
+`useQuery<GET_COUNTRY, GET_COUNTRY_VARIABLES>()`
+
+vs
+
+`useGetCountry()`
+
+## [vscode-graphql](https://marketplace.visualstudio.com/items?itemName=Prisma.vscode-graphql)
+
+Add autocompletion, and jump to defintion to your queries and the GraphQL schema backing them
+
+## [@graphql-tools/mock](https://www.graphql-tools.com/docs/mocking)
+
+Create better, more accurate mocks in your tests by basing them on your schema rather than keeping everything matched up by hand. I’ve written previously on [how to use mocks in tests for testing happy and sad paths](https://alanharper.com.au/2020/10/31/testing-apollo-components-in-all-states/)
+
+## [Paw](https://paw.cloud/)
+
+I’ve been using Paw for a few years now as a general purpose developer’s HTTP client, built specifically for the Mac. The new 3.2 release now adds GraphQL query support as well. I love that I can perform a request to authenticate, and then copy the result of that in to another request dynamically. When the session expires, I can just re-run the authenticate request again, and all the others pickup the new token.

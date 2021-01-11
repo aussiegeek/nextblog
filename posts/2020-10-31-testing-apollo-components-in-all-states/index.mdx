@@ -1,0 +1,226 @@
+---
+title: "Testing Apollo components in all states"
+date: "2020-10-31T22:04:17+11:00"
+unsplash: CJdtbi6wlQY
+---
+
+Have you looked at the [@apollo/client/testing](https://www.apollographql.com/docs/react/development-testing/testing/) package, but were unsatisfied with the limited range of testing it allows? How do you test error or loading conditions?
+
+My solution to that is to use the fantastic mocking tools from [graphql-tools](https://www.graphql-tools.com/docs/mocking/) that allow a full GraphQL schema to be mocked, and allows us to override resolvers easily.
+
+For today’s example I’m using to use the example GraphQL endpoint at [graphqlcountries.com](https://graphqlcountries.com)
+
+## Setup
+
+First, you’ll need to install a few npm packages
+
+`npm install --save-dev @graphql-tools/mock @graphql-tools/schema apollo`
+
+Next we need to fetch the schema for our GraphQL endpoint. This because `@graphql-tools/mock` will help us generate mock data that matches our schema unless we override this data (which we will in some places to make our tests work predictably)
+
+There are a number of ways of getting this GraphQL schema file, depending on the backend you use, but if your GraphQL endpoint supports introspection, then we can use the `apollo` command line tool we installed above to fetch it for us.
+
+You will need to configure it by creating a `apollo.config.js` file in the root of your repository, with the following content
+
+```
+module.exports = {
+  client: {
+    service: { name: "graphqlcountries", url: "https://graphqlcountries.com" },
+  },
+};
+```
+
+Last of all, add a script task to your `package.json` called `schema:download` and set the task to `apollo client:download-schema schema.graphql`, and then run `npm run client:download-schema`, which will have created a `schema.graphql` in the root of your repository. (This could also create introspection JSON, but I use the AST format as its human readable, and refer to it often)
+
+## To the tests
+
+For our tests we are going to use React Testing Library, and check for the paths our code could take. First of all lets build a barebones test that we will know will fail.
+
+```
+import React from "react";
+import { Country } from "./Country";
+import { render, screen } from "@testing-library/react";
+
+describe("Country component", () => {
+  test("show country name & flag", async () => {
+    render(<Country />);
+    expect(await screen.findByText("Australia")).toBeInTheDocument();
+    expect(await screen.findByText("🇦🇺")).toBeInTheDocument();
+  });
+});
+```
+
+Running this test fails, with the error `Could not find "client" in the context or passed in as an option. Wrap the root component in an <ApolloProvider>, or pass an ApolloClient instance in via options.`
+
+Right here is where we previously would have reached for @apollo/client/testing, but instead we are going to make our own real ApolloClient. There are a couple of steps here, but they can be extracted out to a shared module
+
+We need to import a few more packages to get a mock schema up and running
+
+```
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { SchemaLink } from "@apollo/client/link/schema";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { addMocksToSchema } from "@graphql-tools/mock";
+import * as fs from "fs";
+```
+
+Next, we are going to create a component that wraps our Country component that can be used in each test
+
+```
+// load GraphQL schema from disk
+const typeDefs = fs.readFileSync("schema.graphql", "utf-8");
+
+const WrappedCountry = () => {
+  // turn schema string in to a real schema that can be queried against
+  const schema = makeExecutableSchema({ typeDefs });
+
+  // add mocks to the schema to return the data we expect
+  const schemaWithMocks = addMocksToSchema({ schema });
+  // create an Apollo client that uses our mock schema
+  const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: new SchemaLink({ schema: schemaWithMocks }),
+  });
+  return (
+    <ApolloProvider client={client}>
+      <Country />
+    </ApolloProvider>
+  );
+};
+```
+
+Now we can update the `render` function at the start of our test to use the `WrappedCountry` component instead, and run our tests again.
+
+We are met with `TestingLibraryElementError: Unable to find an element with the text: Australia`, which is great news, our tests ran far enough to render the component, and for the component to then query GraphQL, but what did it return?
+
+Looking at the error the render function some more, we see some suspicious “Hello World” strings in the rendered HTML
+
+```
+<dl> 
+  <dt>Country</dt> 
+  <dd>Hello World</dd> 
+
+  <dt>Flag</dt>
+  <dd>Hello World</dd> 
+</dl>
+```
+
+The Hello World is coming from @graphql-tools/mock, unless it is told otherwise it will use “Hello World” for any field that should return a String. However, to be useful for us, we want to create our own mock for the `Country` object returned from GraphQL.
+
+Back in our `WrappedCountry` component, add an object that generates a more consistent mock, and update our `schemaWithMocks` object to one that returns out mocks
+
+````
+<pre class="wp-block-code">```
+  const mocks = {
+    Country: () => {
+      return {
+        name: "Australia",
+        emoji: "🇦🇺",
+      };
+    },
+  };
+  const schemaWithMocks = addMocksToSchema({
+    schema,
+    mocks,
+  });
+````
+
+```
+
+```
+
+And with that, we now have our first passing test.
+
+At this point, we have added a chunk of code for our tests, but haven’t reaped the reward of these changes, so lets run through some more quite reasonable scenarios
+
+## Custom Resolvers
+
+To test other scenarios we need to be able to modify what happens in the `country` resolver, so next are changes to allow us to use custom revolvers.
+
+```
+const WrappedCountry = ({
+  resolvers,
+}: {
+  resolvers?: IExecutableSchemaDefinition["resolvers"];
+}) => {
+  // added the resolvers param to allow our custom resolver
+  const schema = makeExecutableSchema({ typeDefs: schemaString, resolvers });
+  const mocks = {
+    Country: () => {
+      return {
+        name: "Australia",
+        emoji: "🇦🇺",
+      };
+    },
+  };
+  // preserveResolvers is requried to keep our custom resolver in the mocked schema
+  const schemaWithMocks = addMocksToSchema({
+    schema,
+    mocks,
+    preserveResolvers: true,
+  });
+
+  const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: new SchemaLink({ schema: schemaWithMocks }),
+  });
+  return (
+    <ApolloProvider client={client}>
+      <Country />
+    </ApolloProvider>
+  );
+};
+```
+
+## Field returns null
+
+In our `Country` component we use data in the `data.country` object returned from Apollo. What if this field returns null? Here we just set the resolver to always return null
+
+```
+  test("not found", async () => {
+    const country = () => null;
+    render(<WrappedCountry resolvers={{ Query: { country } }} />);
+    expect(await screen.findByText("Not found")).toBeInTheDocument();
+  });
+```
+
+## Loading
+
+The key for Apollo to return `true` for the loading variable is to render the component before the resolver returns, so this time we will return a promise that takes 2 seconds to resolve
+
+````
+<pre class="wp-block-code">```
+  test("loading", async () => {
+    const wait = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
+    const country = async () => {
+      await wait(2000);
+      return mockValidCountry;
+    };
+    render(<WrappedCountry resolvers={{ Query: { country } }} />);
+    expect(await screen.findByText("Loading")).toBeInTheDocument();
+  });
+````
+
+## Error
+
+Lastly, this brings me to the scenario I had a number of missteps working out how to test for. What if there is a server side error?
+
+```
+  test("errors", async () => {
+    const country = jest.fn().mockImplementation(() => {
+      return new GraphQLError("Test error");
+    });
+    render(<WrappedCountry resolvers={{ Query: { country } }} />);
+    expect(await screen.findByText(/Error/)).toBeInTheDocument();
+  });
+```
+
+The key here is to use a `GraphQLError` otherwise the Apollo schema link will catch the error.
+
+I hope this helps you test the ways your Apollo component can deviate off of the happy path. I haven’t covered testing mutations today, which have a few more working parts, but that is coming soon.
+
+Signup to my newsletter to be the first to know when I’ve posted Part 2. Got other React/TypeScript/Apollo testing questions? Drop a line to alan@alanharper.com.au and you could be featured in a future post.
+
+I have shared a repository that implements these tests on [GitHub](https://github.com/aussiegeek/apollo-testing)

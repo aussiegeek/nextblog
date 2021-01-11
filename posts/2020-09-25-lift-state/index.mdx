@@ -1,0 +1,80 @@
+---
+title: "Lift state between React components"
+date: "2020-09-25T11:38:00+10:00"
+tags:
+  - react
+  - state
+unsplash: yt1-v0TrOi8
+# cover: "katerina-kerdi-yt1-v0TrOi8-unsplash.jpg"
+---
+
+Have you ever been in the situation where you need to have state stored in component, and be able to access it in a child component, or a sibling component?
+
+This isn’t at all unusual, and there are a wide range of answers to how to handle this, but in simple cases, we can keep things simple.
+
+Imagine you have a value stored in state, a button to increment it, and a `<div>` to display it in
+
+```
+import React, { useState } from "react";
+
+export default function App() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => {
+    setCount(count + 1);
+  };
+  return (
+    <div>
+      <p>Current Count: {count}</p>
+      <button onClick={increment}>Increment counter</button>
+    </div>
+  );
+}
+```
+
+All straight forward, but what do you actually do when the span to show the count is in one component, and the button to increment it is in another?
+
+The key is in the name of the concept: _lifting state_
+
+In this next example, we have three components: `Parent`, `CountChild` and `ButtonChild`. The code to show the count has been moved to the `CountChild`, and the code for the button to is in the `ButtonChild`. We setup the `useState` hook in the parent exactly the same as we have done previously, pass the `count` variable as a prop to `CountChild` for it to display all as per normal.
+
+The key is passing a reference to `setCount` to the `ButtonChild` that allows it to update the state that is shared
+
+```
+import React, { useState } from "react";
+
+export default function Parent() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <CountChild count={count} />
+      <ButtonChild count={count} setCount={setCount} />
+    </div>
+  );
+}
+
+function CountChild({ count }) {
+  return (
+    <div>
+      <h2>CountChild</h2>
+      <div>Current Count: {count}</div>
+    </div>
+  );
+}
+
+function ButtonChild({ count, setCount }) {
+  const increment = () => {
+    setCount(count + 1);
+  };
+
+  return (
+    <div>
+      <h2>ButtonChild</h2>
+      <div>
+        <button onClick={increment}>Increment counter</button>
+      </div>
+    </div>
+  );
+}
+```
