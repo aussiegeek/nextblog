@@ -22,7 +22,7 @@ There are a number of ways of getting this GraphQL schema file, depending on the
 
 You will need to configure it by creating a `apollo.config.js` file in the root of your repository, with the following content
 
-```
+```javascript
 module.exports = {
   client: {
     service: { name: "graphqlcountries", url: "https://graphqlcountries.com" },
@@ -36,7 +36,7 @@ Last of all, add a script task to your `package.json` called `schema:download` a
 
 For our tests we are going to use React Testing Library, and check for the paths our code could take. First of all lets build a barebones test that we will know will fail.
 
-```
+```javascript
 import React from "react";
 import { Country } from "./Country";
 import { render, screen } from "@testing-library/react";
@@ -56,7 +56,7 @@ Right here is where we previously would have reached for @apollo/client/testing,
 
 We need to import a few more packages to get a mock schema up and running
 
-```
+```javascript
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { SchemaLink } from "@apollo/client/link/schema";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -66,7 +66,7 @@ import * as fs from "fs";
 
 Next, we are going to create a component that wraps our Country component that can be used in each test
 
-```
+```javascript
 // load GraphQL schema from disk
 const typeDefs = fs.readFileSync("schema.graphql", "utf-8");
 
@@ -95,13 +95,14 @@ We are met with `TestingLibraryElementError: Unable to find an element with the 
 
 Looking at the error the render function some more, we see some suspicious “Hello World” strings in the rendered HTML
 
-```
-<dl> 
-  <dt>Country</dt> 
-  <dd>Hello World</dd> 
-
+```html
+<dl>
+  <dt>Country</dt>
+  <dd>Hello World</dd>
+   
   <dt>Flag</dt>
-  <dd>Hello World</dd> 
+  <dd>Hello World</dd>
+   
 </dl>
 ```
 
@@ -109,7 +110,7 @@ The Hello World is coming from @graphql-tools/mock, unless it is told otherwise 
 
 Back in our `WrappedCountry` component, add an object that generates a more consistent mock, and update our `schemaWithMocks` object to one that returns out mocks
 
-```
+```javascript
 const mocks = {
   Country: () => {
     return {
@@ -132,7 +133,7 @@ At this point, we have added a chunk of code for our tests, but haven’t reaped
 
 To test other scenarios we need to be able to modify what happens in the `country` resolver, so next are changes to allow us to use custom revolvers.
 
-```
+```javascript
 const WrappedCountry = ({
   resolvers,
 }: {
@@ -148,7 +149,7 @@ const WrappedCountry = ({
       };
     },
   };
-  // preserveResolvers is requried to keep our custom resolver in the mocked schema
+  // preserveResolvers is required to keep our custom resolver in the mocked schema
   const schemaWithMocks = addMocksToSchema({
     schema,
     mocks,
@@ -171,45 +172,44 @@ const WrappedCountry = ({
 
 In our `Country` component we use data in the `data.country` object returned from Apollo. What if this field returns null? Here we just set the resolver to always return null
 
-```
-  test("not found", async () => {
-    const country = () => null;
-    render(<WrappedCountry resolvers={{ Query: { country } }} />);
-    expect(await screen.findByText("Not found")).toBeInTheDocument();
-  });
+```javascript
+test("not found", async () => {
+  const country = () => null;
+  render(<WrappedCountry resolvers={{ Query: { country } }} />);
+  expect(await screen.findByText("Not found")).toBeInTheDocument();
+});
 ```
 
 ## Loading
 
 The key for Apollo to return `true` for the loading variable is to render the component before the resolver returns, so this time we will return a promise that takes 2 seconds to resolve
 
-````
-<pre class="wp-block-code">```
-  test("loading", async () => {
-    const wait = (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms));
+```javascript
+test("loading", async () => {
+  const wait = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
-    const country = async () => {
-      await wait(2000);
-      return mockValidCountry;
-    };
-    render(<WrappedCountry resolvers={{ Query: { country } }} />);
-    expect(await screen.findByText("Loading")).toBeInTheDocument();
-  });
-````
+  const country = async () => {
+    await wait(2000);
+    return mockValidCountry;
+  };
+  render(<WrappedCountry resolvers={{ Query: { country } }} />);
+  expect(await screen.findByText("Loading")).toBeInTheDocument();
+});
+```
 
 ## Error
 
 Lastly, this brings me to the scenario I had a number of missteps working out how to test for. What if there is a server side error?
 
-```
-  test("errors", async () => {
-    const country = jest.fn().mockImplementation(() => {
-      return new GraphQLError("Test error");
-    });
-    render(<WrappedCountry resolvers={{ Query: { country } }} />);
-    expect(await screen.findByText(/Error/)).toBeInTheDocument();
+```javascript
+test("errors", async () => {
+  const country = jest.fn().mockImplementation(() => {
+    return new GraphQLError("Test error");
   });
+  render(<WrappedCountry resolvers={{ Query: { country } }} />);
+  expect(await screen.findByText(/Error/)).toBeInTheDocument();
+});
 ```
 
 The key here is to use a `GraphQLError` otherwise the Apollo schema link will catch the error.

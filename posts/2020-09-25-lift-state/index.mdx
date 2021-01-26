@@ -14,7 +14,7 @@ This isn’t at all unusual, and there are a wide range of answers to how to han
 
 Imagine you have a value stored in state, a button to increment it, and a `<div>` to display it in
 
-```
+```javascript
 import React, { useState } from "react";
 
 export default function App() {
@@ -40,7 +40,7 @@ In this next example, we have three components: `Parent`, `CountChild` and `Butt
 
 The key is passing a reference to `setCount` to the `ButtonChild` that allows it to update the state that is shared
 
-```
+```javascript
 import React, { useState } from "react";
 
 export default function Parent() {
