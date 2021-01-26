@@ -3,15 +3,21 @@ import { getPostBySlug, getAllPosts } from "../../getAllPosts";
 import MDX from "@mdx-js/runtime";
 import Link from "next/link";
 import Head from "next/head";
+import ConvertKitForm from "convertkit-react";
 
 const Page = ({ content, title }) => (
-  <article className="mt-5 prose prose-lg">
-    <Head>
-      <title>{title}</title>
-    </Head>
-    <h1>{title}</h1>
-    <MDX>{content}</MDX>
-  </article>
+  <>
+    <article className="mt-5 prose prose-lg">
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <h1>{title}</h1>
+      <MDX>{content}</MDX>
+    </article>
+    <div className="m-5 w-full">
+      <ConvertKitForm formId={1673792} template="mills" />
+    </div>
+  </>
 );
 
 export default Page;
