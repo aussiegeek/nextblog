@@ -5,6 +5,9 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "lint:markdown": "markdownlint '**/*.mdx'",
+    "prettier:check": "prettier -c .",
+    "prettier:fix": "prettier --write .",
     "start": "next start"
   },
   "husky": {
