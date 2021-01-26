@@ -109,24 +109,19 @@ The Hello World is coming from @graphql-tools/mock, unless it is told otherwise 
 
 Back in our `WrappedCountry` component, add an object that generates a more consistent mock, and update our `schemaWithMocks` object to one that returns out mocks
 
-````
-<pre class="wp-block-code">```
-  const mocks = {
-    Country: () => {
-      return {
-        name: "Australia",
-        emoji: "🇦🇺",
-      };
-    },
-  };
-  const schemaWithMocks = addMocksToSchema({
-    schema,
-    mocks,
-  });
-````
-
 ```
-
+const mocks = {
+  Country: () => {
+    return {
+      name: "Australia",
+      emoji: "🇦🇺",
+    };
+  },
+};
+const schemaWithMocks = addMocksToSchema({
+  schema,
+  mocks,
+});
 ```
 
 And with that, we now have our first passing test.
