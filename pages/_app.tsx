@@ -1,7 +1,8 @@
+import type { AppProps } from "next/app";
 import "tailwindcss/tailwind.css";
 import Link from "next/link";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div className="mt-10 max-w-4xl mx-auto">
       <div className="font-sans text-3xl">
