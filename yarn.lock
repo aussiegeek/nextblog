@@ -1555,7 +1555,7 @@ convert-source-map@^0.3.3:
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-0.3.5.tgz#f1d802950af7dd2631a1febe0596550c86ab3190"
   integrity sha1-8dgClQr33SYxof6+BZZVDIarMZA=
 
-convertkit-react@^1.5.0:
+convertkit-react@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/convertkit-react/-/convertkit-react-1.5.0.tgz#d4840a0d86445cc41650bb3880d71d8aa3af6589"
   integrity sha512-i3/0/J671QZAsSKHr/BHKESkvuSd/jOK/TfgPOPoF5BFipVS82SKhnw+xmdfunUUWPpMrkaN0F4f5VnBy0FfNg==
@@ -3386,7 +3386,7 @@ markdown-it@12.0.2:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-markdownlint-cli@^0.26.0:
+markdownlint-cli@0.26.0:
   version "0.26.0"
   resolved "https://registry.yarnpkg.com/markdownlint-cli/-/markdownlint-cli-0.26.0.tgz#cd89e3e39a049303ec125c8aa291da4f3325df29"
   integrity sha512-biLfeGNZG9nw0yJbtFBzRlew2/P5w7JSseKwolSox3zejs7dLpGvPgqbC+iqJnqqGWcWLtXaXh8bBEKWmfl10A==
