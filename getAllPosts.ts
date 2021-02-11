@@ -1,7 +1,7 @@
 import matter from "gray-matter";
 import * as fs from "fs";
 
-function importAll(r) {
+function importAll(r: __WebpackModuleApi.RequireContext) {
   return r.keys().map((fileName) => ({
     link: fileName.substr(1).replace(/\/index\.mdx$/, ""),
     module: r(fileName),
@@ -17,7 +17,6 @@ export async function getAllPosts() {
   const posts = [];
   for (const key of context.keys()) {
     const post = key.slice(2);
-    console.log(key);
     const path = `./posts/${post}`;
     const content = fs.readFileSync(path, "utf-8");
     const meta = matter(content);
@@ -27,11 +26,10 @@ export async function getAllPosts() {
     });
   }
 
-  console.log(posts);
   return posts;
 }
 
-export async function getPostBySlug(slug) {
+export async function getPostBySlug(slug: string | string[] | undefined) {
   const path = `./posts/${slug}/index.mdx`;
 
   const meta = matter(fs.readFileSync(path, "utf-8"));

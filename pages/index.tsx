@@ -1,7 +1,11 @@
 import { getAllPosts } from "../getAllPosts";
 import PostSummary from "../components/PostSummary";
 
-export default function Home({ posts }) {
+export default function Home({
+  posts,
+}: {
+  posts: Array<{ slug: string; title: any }>;
+}) {
   return (
     <div>
       {posts.map((post) => (
