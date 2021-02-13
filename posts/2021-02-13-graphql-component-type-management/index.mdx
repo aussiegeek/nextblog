@@ -1,0 +1,88 @@
+---
+title: "Type management for GraphQL based React components"
+date: "2021-02-13"
+tags:
+  - react
+  - typescript
+  - graphql
+---
+
+Well, that's a mouthful of a title, but it only happens in these specific combination of factors:
+
+When you are using these tools together
+
+1. React
+1. GraphQL
+1. TypeScript
+
+For a page, using `useQuery` and then having types flow from there to the rest of your page component works just fine, without much thought required. I find where it starts to go awry is when you want to be able to call a child component in your page, that takes a more complex object, and is designed to fit your GraphQL schema
+
+Example using graphqlcountries.com
+
+```javascript
+const Country: React.FC<{
+  cca2: string,
+  name: string,
+  languages: { name: string },
+}> = ({ cca2, name, languages }) => {
+  return (
+    <div>
+      <h2>
+        {emoji} {name}
+      </h2>
+      <h3>Languages Spoken</h3>
+      <ul>
+        {languages.map((language) => (
+          <ul>{language.name}</ul>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+```graphql
+query GetCountries {
+  countries {
+    cca2
+    name
+    languages {
+      name
+    }
+  }
+}
+```
+
+Manual typing like this is just an opportunity for more bugs to come and delight your day. Even worse if you have a nullable field, if you don't include it in your query everything will typecheck just fine, but won't work as expected. This can also be painful later on if we want to use more attributes from the `Country` object.
+
+The first step here is to extract a GraphQL fragment that fetches all the required fields that the component depends on
+
+```graphql
+fragment CountryComponent on Country {
+  cca2
+  name
+  languages {
+    name
+  }
+}
+```
+
+```graphql
+query GetCountries {
+  countries {
+    ...CountryComponent
+  }
+}
+```
+
+Now, if we want to add an extra field to the Country component, we only need to update the fragment for it to be used in all of our queries that use this component.
+
+I'm already a lot happier with this reduction of duplication, but I want to go a little further
+
+The first step is to generate our types using `graphql-code-generator`, and part of the types generated, are one that matches our `CountryComponent` fragment. This means we can get rid of our manual typing, and simplify the `CountryComponent`
+
+```javascript
+const Country: React.FC<CountryComponent> = ({ cca2, name, languages }) => {
+```
+
+This is also very useful if you have a helper function that needs to type a more complex object. Also, don't forget that fragments can be nested
