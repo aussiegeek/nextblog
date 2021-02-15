@@ -1,0 +1,45 @@
+---
+title: Migrating an existing TypeScript codebase to strict mode
+---
+
+I’ve recently been working on a codebase that is using TypeScript, but has strict mode disabled, and there are issues such as implicit `any` and no null checking.
+
+The issue is that if you turn on any of the TypeScript flags to make your codebase more strict, you then need to fix everything at once which isn’t always feasible, and in a number of cases makes new issues show up in other areas of your codebase (valid issues, they just weren’t visible until you fixed the earlier issue).
+
+I’ve worked my way through a few different approaches to try and improve the codebase over time.
+
+## A second ‘strict’ tsconfig.json
+
+It certainly does show up issues, but I found was a substantial amount of issues that made it hard to work out which issues related to the changes I was making.
+
+## Targeted strict `tsconfig.json`
+
+Having a second tsconfig.json that explicitly only had files in the `files` key that I wished to show errors for. The problem I ran rapidly in to is that if a file in the `files` key includes another, then that second file also has this configuration applied to it, so you have to work your way out backwards.
+
+I did start making some progress here, but it still involves running tools manually or being prepared for an unexpected change to result in a bunch of errors.
+
+## Betterer
+
+I came across [Betterer](https://github.com/phenomnomnominal/betterer), and it was exactly what I was looking for.
+
+You specify a configuration, and betterer will generate a results file that is then added to your repository. This is a list of known issues that don’t match the current rules. This means any changes that you make that create new issues are flagged, and can be caught in CI, thereby making your codebase betterer over time.
+
+To add bettered to your code base, run `yarn add -D @betterer/cli @betterer/typescript`, and create the `betterer.ts` with the following:
+
+```javascript
+import { typescript } from "@betterer/typescript";
+
+export default {
+  "stricter compilation": typescript("./tsconfig.json", {
+    noImplicitAny: true,
+    strictNullChecks: true,
+    strictFunctionTypes: true,
+  }),
+};
+```
+
+This configuration will take your existing `tsconfig.json`, and then apply the extra rules specified.
+
+Make sure you are running `yarn betterer` as part of your CI run, and now you have a good starting place to improve your codebase.
+
+Also useful to note that betterer has plugins for adding new eslint rules, or even running custom code
