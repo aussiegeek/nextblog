@@ -14,7 +14,4 @@ jobs:
           node-version: 14.x
 
       - run: yarn install --immutable
-      - run: yarn prettier:check
-      - run: yarn lint:markdown
-      - run: yarn tsc --noEmit
-      - run: yarn build
+      - run: yarn ci

@@ -2,10 +2,13 @@ import * as Panelbear from "@panelbear/panelbear-js";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-export const usePanelbear = (site: string, config = {}) => {
+export const usePanelbear = (site: string | undefined, config = {}) => {
   const router = useRouter();
 
   useEffect(() => {
+    if (!site) {
+      return;
+    }
     Panelbear.load(site, config);
 
     // Trigger initial page view

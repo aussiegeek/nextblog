@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "ci": "yarn prettier:check && yarn lint:markdown && yarn tsc --noEmit && yarn build",
     "dev": "next dev",
     "lint:markdown": "markdownlint '**/*.mdx'",
     "prettier:check": "prettier -c .",
@@ -12,7 +13,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn ci"
     }
   },
   "lint-staged": {
