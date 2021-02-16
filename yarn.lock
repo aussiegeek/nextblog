@@ -1733,6 +1733,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@panelbear/panelbear-js@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@panelbear/panelbear-js@npm:1.2.0"
+  checksum: 657132dcc0988f7f1f5a700fa461013539bba23e3687489abb521f5d67a72a0e13de547fd14157a1c047df9dddeb6bb59f33553ff925d4f05ceb13af3432ca79
+  languageName: node
+  linkType: hard
+
 "@tailwindcss/typography@npm:0.4.0":
   version: 0.4.0
   resolution: "@tailwindcss/typography@npm:0.4.0"
@@ -2583,6 +2590,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "blog@workspace:."
   dependencies:
+    "@panelbear/panelbear-js": ^1.2.0
     "@tailwindcss/typography": 0.4.0
     "@types/node": 14.14.27
     "@types/react": 17.0.1
