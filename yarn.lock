@@ -2607,7 +2607,7 @@ __metadata:
     prettier: 2.2.1
     react: 17.0.1
     react-dom: 17.0.1
-    sort-package-json: 1.48.1
+    sort-package-json: 1.49.0
     tailwindcss: 2.0.3
     typescript: 4.1.5
   languageName: unknown
@@ -8275,9 +8275,9 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"sort-package-json@npm:1.48.1":
-  version: 1.48.1
-  resolution: "sort-package-json@npm:1.48.1"
+"sort-package-json@npm:1.49.0":
+  version: 1.49.0
+  resolution: "sort-package-json@npm:1.49.0"
   dependencies:
     detect-indent: ^6.0.0
     detect-newline: 3.1.0
@@ -8287,7 +8287,7 @@ fsevents@~2.1.2:
     sort-object-keys: ^1.1.3
   bin:
     sort-package-json: cli.js
-  checksum: 4537158dea7e640ecd34d3af0fe683c7fed5ef3b5d361b30ba502b1e1a9ac3b84a77517901ce75fd9804da99255f41fc003ef3f473e55d5728e724cf18658f5c
+  checksum: 12b043f75e5d3478f2847bc20f0cc1bfa87ca755a2f365b782e1ab15443bf5cd82627040324c0289fa19e868519dfebea4a64ff80176d373b002a537d98c29db
   languageName: node
   linkType: hard
 
