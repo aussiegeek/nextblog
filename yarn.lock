@@ -1831,14 +1831,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.24":
-  version: 17.0.24
-  resolution: "@types/react@npm:17.0.24"
+"@types/react@npm:17.0.26":
+  version: 17.0.26
+  resolution: "@types/react@npm:17.0.26"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 581a29c78348b735df3c813c5d00510d35b951d442ae84625b6101bfaf04f1b8a92cb2808ea0bb92eb0fa7344a9337787f6d501c291512216294fd1e6090478e
+  checksum: 41db35978a0d77ce576025746b57262086b9860811d56e5b4d46009a9ce999ff2c6ff69a676bda472d7b2d74272445c1b6252ca355fbdb0def3705846578cd2f
   languageName: node
   linkType: hard
 
@@ -2601,7 +2601,7 @@ __metadata:
     "@panelbear/panelbear-js": ^1.2.0
     "@tailwindcss/typography": 0.4.0
     "@types/node": 14.17.20
-    "@types/react": 17.0.24
+    "@types/react": 17.0.26
     "@types/webpack-env": 1.16.2
     autoprefixer: 10.2.4
     convertkit-react: 1.5.0
