@@ -43,7 +43,7 @@
     "lint-staged": "10.5.4",
     "markdownlint-cli": "0.31.1",
     "prettier": "2.2.1",
-    "sort-package-json": "1.54.0",
+    "sort-package-json": "1.55.0",
     "typescript": "4.1.5"
   }
 }
