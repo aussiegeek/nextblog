@@ -1803,10 +1803,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:14.18.16":
-  version: 14.18.16
-  resolution: "@types/node@npm:14.18.16"
-  checksum: 7b028d26ec1434c9f83780aeb18e0b1d28ccfa502e838cd52ca4b4a79ca5145965999510a159a7b79eaa6acd8f3dbba9344ba4a966ff9dd08c431893bcd25406
+"@types/node@npm:14.18.17":
+  version: 14.18.17
+  resolution: "@types/node@npm:14.18.17"
+  checksum: 1a92bea03781c63cfbac5aea1620e733500d8b7644abae176f62f35f3abdf6718eb76d0354125646a15e54e7806541b2970aa724062c5506f4611b0e8610ff89
   languageName: node
   linkType: hard
 
@@ -2600,7 +2600,7 @@ __metadata:
   dependencies:
     "@panelbear/panelbear-js": ^1.2.0
     "@tailwindcss/typography": 0.4.0
-    "@types/node": 14.18.16
+    "@types/node": 14.18.17
     "@types/react": 17.0.44
     "@types/webpack-env": 1.16.4
     autoprefixer: 10.2.4
