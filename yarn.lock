@@ -1856,10 +1856,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack-env@npm:1.16.4":
-  version: 1.16.4
-  resolution: "@types/webpack-env@npm:1.16.4"
-  checksum: b5461741d8a4f8163c0aa64f16d9efb84c1a7ac4cd5e1fefa68d39e19586976d40152f5fa823b467e2dc2b0d83e99b785615824e21f5b7cc1b379a899f27ebe3
+"@types/webpack-env@npm:1.17.0":
+  version: 1.17.0
+  resolution: "@types/webpack-env@npm:1.17.0"
+  checksum: 27e90fde84efcd370cc7e9aa5d8b540e7e082633e98e86626c18f45fc3b72035cd0f66e6773828d392ab9eeb90dc7abdd9314dfcd92b17597a8ae68d91caaffb
   languageName: node
   linkType: hard
 
@@ -2602,7 +2602,7 @@ __metadata:
     "@tailwindcss/typography": 0.4.0
     "@types/node": 14.18.18
     "@types/react": 17.0.45
-    "@types/webpack-env": 1.16.4
+    "@types/webpack-env": 1.17.0
     autoprefixer: 10.2.4
     convertkit-react: 1.5.0
     gray-matter: 4.0.2
