@@ -1803,10 +1803,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:14.18.31":
-  version: 14.18.31
-  resolution: "@types/node@npm:14.18.31"
-  checksum: 8c28b5916c411f9371a3ba13dcd0c9ca06ac7f6895d0b072e7b646ecebb8c8202257b1cd663606b7dc93d2eb58bb982f58db878464294f75a1391a7def6f8057
+"@types/node@npm:20.11.30":
+  version: 20.11.30
+  resolution: "@types/node@npm:20.11.30"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 831b6f61689bb40422971a18c03ec684a61800ce3632dfc2b4e033f72d39a9338b306aee2c68c5e76dfa49fb571c8873d305af9449932a9db35387e9da0578e2
   languageName: node
   linkType: hard
 
@@ -2600,7 +2602,7 @@ __metadata:
   dependencies:
     "@panelbear/panelbear-js": ^1.2.0
     "@tailwindcss/typography": 0.4.0
-    "@types/node": 14.18.31
+    "@types/node": 20.11.30
     "@types/react": 17.0.50
     "@types/webpack-env": 1.18.2
     autoprefixer: 10.2.4
@@ -9138,6 +9140,13 @@ typescript@4.1.5:
   version: 1.0.6
   resolution: "uc.micro@npm:1.0.6"
   checksum: 9dfe5ad0a08059c3eb6ded70b7cfb6fdcb5908b385af9d4717cee7f140571f5c2bb89405093ace07cfd0e283f409495d2feafd321b4b703c1fa3014e129dab27
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 55e14a010998c7e70681ac5533974dec80d8ae780cfbf7f99489abc28e764b051f94f94bff1ecf20a3df93590569e30e3b9cdafd54cebb78768f6a9a9577e2ee
   languageName: node
   linkType: hard
 
