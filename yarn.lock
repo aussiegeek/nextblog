@@ -2612,7 +2612,7 @@ __metadata:
     next: 10.0.5
     next-mdx-remote: 2.1.3
     postcss: 8.2.6
-    prettier: 2.2.1
+    prettier: 2.8.8
     react: 17.0.1
     react-dom: 17.0.1
     sort-package-json: 1.57.0
@@ -7316,12 +7316,12 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.2.1":
-  version: 2.2.1
-  resolution: "prettier@npm:2.2.1"
+"prettier@npm:2.8.8":
+  version: 2.8.8
+  resolution: "prettier@npm:2.8.8"
   bin:
     prettier: bin-prettier.js
-  checksum: 92c6c9f4b87eba1f28466edee57dd18c80d00b858edda77d46d1950d20e6e302b68ee255fc91133ba931e63c4577b5ae30da194d9626a8f3c0177778b91bf056
+  checksum: a2afc2fea5326d1e3667e385652f4f82ebb3467a79fd893ad237e683a65ad865ecf108658cfc296cc1224ce5862340417a4eddea2174917d3b4bc732e3e83501
   languageName: node
   linkType: hard
 
